@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aposte no Ganho - TikTok Live</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/TikTok_logo.svg/2048px-TikTok_logo.svg.png') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      font-family: sans-serif;
+      overflow: hidden;
+      backdrop-filter: brightness(0.4);
+    }
+    .main-container {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      position: relative;
+    }
+    .like-bar {
+      width: 60px;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 10px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+    .like-fill {
+      width: 100%;
+      background: hotpink;
+      height: 0%;
+      transition: height 3s;
+      border-radius: 10px;
+    }
+    .like-label {
+      position: absolute;
+      top: 10px;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-weight: bold;
+    }
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    .bar-container {
+      background: #444a;
+      width: 80%;
+      height: 40px;
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress {
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s;
+    }
+    .rose { background: linear-gradient(to right, pink, red); }
+    .gg { background: linear-gradient(to right, cyan, blue); }
+    .tiktok { background: linear-gradient(to right, white, black); }
+    .counter {
+      font-size: 1.5em;
+      text-shadow: 2px 2px 6px #000;
+    }
+    .label {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-weight: bold;
+    }
+    h1 {
+      font-size: 2em;
+      text-shadow: 2px 2px 6px #000;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div class="content">
+      <h1>Aposte no Ganho 💰</h1>
+      <div class="bar-container">
+        <span class="label">Rosas 🌹</span>
+        <div class="progress rose" id="progressRose"></div>
+      </div>
+      <div class="counter" id="counterRose">0</div>
+      <div class="bar-container">
+        <span class="label">GG 🚀</span>
+        <div class="progress gg" id="progressGG"></div>
+      </div>
+      <div class="counter" id="counterGG">0</div>
+      <div class="bar-container">
+        <span class="label">TikTok 🕺</span>
+        <div class="progress tiktok" id="progressTikTok"></div>
+      </div>
+      <div class="counter" id="counterTikTok">0</div>
+    </div>
+    <div class="like-bar">
+      <div class="like-fill" id="likeFill"></div>
+      <div class="like-label">Likes ❤️</div>
+    </div>
+  </div>
+
+  <script>
+    let progress = {
+      Rose: 0,
+      GG: 0,
+      TikTok: 0,
+      Likes: 0
+    };
+
+    function updateUI() {
+      document.getElementById("progressRose").style.width = progress.Rose + "%";
+      document.getElementById("counterRose").textContent = Math.floor(progress.Rose);
+      document.getElementById("progressGG").style.width = progress.GG + "%";
+      document.getElementById("counterGG").textContent = Math.floor(progress.GG);
+      document.getElementById("progressTikTok").style.width = progress.TikTok + "%";
+      document.getElementById("counterTikTok").textContent = Math.floor(progress.TikTok);
+      document.getElementById("likeFill").style.height = progress.Likes + "%";
+    }
+
+    function boostProgress(type, amount = 10) {
+      if (progress[type] !== undefined) {
+        progress[type] += amount;
+        if (progress[type] > 100) progress[type] = 100;
+        updateUI();
+      }
+    }
+
+    setInterval(() => {
+      for (let key of ["Rose", "GG", "TikTok"]) {
+        progress[key] -= 0.5;
+        if (progress[key] < 0) progress[key] = 0;
+      }
+      updateUI();
+    }, 300);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const boost = urlParams.get('boost');
+    if (boost) {
+      const boostAmount = boost === "Likes" ? 0.5 : 10;
+      boostProgress(boost, boostAmount);
+    }
+  </script>
+</body>
+</html>
